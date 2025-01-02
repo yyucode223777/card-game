@@ -10,15 +10,15 @@
 </head>
 
 <body>
-  <div id="app" class="bg-green-700 min-h-screen flex flex-col items-center justify-center gap-y-4 p-3">
-    <div class="container grid grid-cols-4 gap-4 max-w-5xl">
-      <div
-        class="sm:col-span-2 md:col-span-3 col-span-4 flex flex-col gap-10 py-14 bg-green-900 rounded border-4 border-yellow-400 px-2">
-        <div class="flex justify-center">
-          <div class="flex flex-col gap-2 max-w-xl">
+  <div id="app" class="bg-green-700 min-h-screen">
+    <!-- <div id="game-div" class="flex flex-col items-center justify-center gap-y-4 px-3 pt-10">
+      <div class="container grid grid-cols-4 gap-4 max-w-5xl">
+        <div id="table"
+          class="sm:col-span-2 md:col-span-3 col-span-4 flex flex-col gap-10 py-14 bg-green-900 rounded border-4 border-yellow-400 px-2">
+          <div id="dealer" class="flex flex-col gap-2">
             <h2 class="text-yellow-400 text-3xl font-semibold text-center">Dealer</h2>
-            <p class="text-white text-xl text-center">S: waiting for bets</p>
-            <div id="hand" class="flex gap-5 justify-center">
+            <p id="dealer-status" class="text-white text-xl text-center">S: waiting for bets</p>
+            <div id="dealer-hand" class="flex gap-5 justify-center">
               <div class="bg-white flex flex-col justify-center items-center px-2">
                 <div class="text-center">
                   <img src="https://recursionist.io/img/diamond.png" style="width: 50px; height: 50px;" />
@@ -39,16 +39,14 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="flex justify-center">
-          <div class="flex flex-col gap-2">
+          <div id="player" class="flex flex-col gap-2">
             <h2 class="text-yellow-400 text-3xl font-semibold text-center">Player</h2>
             <div class="flex gap-5 justify-center">
-              <p class="text-white text-xl">S: betting</p>
-              <p class="text-white text-xl">B: 70</p>
-              <p class="text-white text-xl">C: 400</p>
+              <p id="player-status" class="text-white text-xl">S: betting</p>
+              <p id="player-bet" class="text-white text-xl">B: 70</p>
+              <p id="player-chips" class="text-white text-xl">C: 400</p>
             </div>
-            <div id="hand" class="flex gap-5 justify-center">
+            <div id="player-hand" class="flex gap-5 justify-center">
               <div class="bg-white flex flex-col justify-center items-center px-2">
                 <div class="text-center">
                   <img src="https://recursionist.io/img/diamond.png" style="width: 50px; height: 50px;" />
@@ -70,63 +68,63 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="sm:col-span-2 md:col-span-1 col-span-4 bg-green-900 rounded border-4 border-yellow-400 py-6 px-2">
-        <div id="bets">
-          <p class="text-center text-yellow-400 text-3xl font-semibold mb-7">Stake</p>
-          <div class="flex flex-row justify-around sm:flex-col gap-3">
-            <div class="flex gap-2 sm:justify-between">
-              <label class="text-2xl text-white font-semibold" for="denomination-5">5:</label>
-              <input class="text-xl sm:w-2/3 font-semibold rounded px-2 focus:outline-2 outline-emerald-400" type="number"
-                min="0" max="80" value="0" id="denomination-5" />
+        <div id="operation"
+          class="sm:col-span-2 md:col-span-1 col-span-4 bg-green-900 rounded border-4 border-yellow-400 py-6 px-2">
+          <div id="bet">
+            <p class="text-center text-yellow-400 text-3xl font-semibold mb-7">Stake</p>
+            <div class="flex flex-row justify-around sm:flex-col gap-3">
+              <div class="flex gap-2 sm:justify-between">
+                <label class="text-2xl text-white font-semibold" for="denomination-5">5:</label>
+                <input class="text-xl sm:w-2/3 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
+                  type="number" min="0" max="80" value="0" id="denomination-5" />
+              </div>
+              <div class="flex gap-2 sm:justify-between">
+                <label class="text-2xl text-white font-semibold" for="denomination-20">20:</label>
+                <input class="text-xl sm:w-2/3 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
+                  type="number" min="0" max="20" value="0" id="denomination-20" />
+              </div>
+              <div class="flex gap-2 sm:justify-between">
+                <label class="text-2xl text-white font-semibold" for="denomination-50">50:</label>
+                <input class="text-xl sm:w-2/3 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
+                  type="number" min="0" max="8" value="0" id="denomination-50" />
+              </div>
+              <div class="flex gap-2 sm:justify-between">
+                <label class="text-2xl text-white font-semibold" for="denomination-100">100:</label>
+                <input class="text-xl sm:w-2/3 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
+                  type="number" min="0" max="4" value="0" id="denomination-100" />
+              </div>
             </div>
-            <div class="flex gap-2 sm:justify-between">
-              <label class="text-2xl text-white font-semibold" for="denomination-20">20:</label>
-              <input class="text-xl sm:w-2/3 font-semibold rounded px-2 focus:outline-2 outline-emerald-400" type="number"
-                min="0" max="20" value="0" id="denomination-20" />
+            <div class="flex justify-center mt-5">
+              <button
+                class="bg-yellow-500 rounded-full text-white text-2xl w-4/5 py-2 shadow-black shadow-md tarnsition-all duration-150 hover:opacity-90 hover:translate-y-1 hover:shadow-none">Submit</button>
             </div>
-            <div class="flex gap-2 sm:justify-between">
-              <label class="text-2xl text-white font-semibold" for="denomination-50">50:</label>
-              <input class="text-xl sm:w-2/3 font-semibold rounded px-2 focus:outline-2 outline-emerald-400" type="number"
-                min="0" max="8" value="0" id="denomination-50" />
-            </div>
-            <div class="flex gap-2 sm:justify-between">
-              <label class="text-2xl text-white font-semibold" for="denomination-100">100:</label>
-              <input class="text-xl sm:w-2/3 font-semibold rounded px-2 focus:outline-2 outline-emerald-400" type="number"
-                min="0" max="4" value="0" id="denomination-100" />
-            </div>
-
           </div>
-          <div class="flex justify-center mt-5">
-            <button
-              class="bg-yellow-500 rounded-full text-white text-2xl w-4/5 py-2 shadow-black shadow-md tarnsition-all duration-150 hover:opacity-90 hover:translate-y-1 hover:shadow-none">Bet!!</button>
+          <div id="action">
+            <p class="text-center text-yellow-400 text-3xl font-semibold mb-7">Action</p>
+            <div class="flex flex-col items-center gap-5">
+              <button
+                class="bg-slate-500 rounded-full text-white text-2xl w-4/5 py-2 shadow-black shadow-md tarnsition-all duration-150 hover:bg-slate-400 hover:translate-y-1 hover:shadow-none">Surrender</button>
+              <button
+                class="bg-blue-500 rounded-full text-white text-2xl w-4/5 py-2 shadow-black shadow-md tarnsition-all duration-150 hover:bg-blue-400 hover:translate-y-1 hover:shadow-none">Stand</button>
+              <button
+                class="bg-amber-500 rounded-full text-white text-2xl w-4/5 py-2 shadow-black shadow-md tarnsition-all duration-150 hover:bg-amber-400 hover:translate-y-1 hover:shadow-none">Hit</button>
+              <button
+                class="bg-red-500 rounded-full text-white text-2xl w-4/5 py-2 shadow-black shadow-md tarnsition-all duration-150 hover:bg-red-400 hover:translate-y-1 hover:shadow-none">Double</button>
+            </div>
           </div>
         </div>
-        <!-- <div id="actionButtons">
-          <p class="text-center text-yellow-400 text-3xl font-semibold mb-7">Action</p>
-          <div class="flex flex-col items-center gap-5">
-            <button
-              class="bg-slate-500 rounded-full text-white text-2xl w-4/5 py-2 shadow-black shadow-md tarnsition-all duration-150 hover:bg-slate-400 hover:translate-y-1 hover:shadow-none">Surrender</button>
-            <button
-              class="bg-blue-500 rounded-full text-white text-2xl w-4/5 py-2 shadow-black shadow-md tarnsition-all duration-150 hover:bg-blue-400 hover:translate-y-1 hover:shadow-none">Stand</button>
-            <button
-              class="bg-amber-500 rounded-full text-white text-2xl w-4/5 py-2 shadow-black shadow-md tarnsition-all duration-150 hover:bg-amber-400 hover:translate-y-1 hover:shadow-none">Hit</button>
-            <button
-              class="bg-red-500 rounded-full text-white text-2xl w-4/5 py-2 shadow-black shadow-md tarnsition-all duration-150 hover:bg-red-400 hover:translate-y-1 hover:shadow-none">Double</button>
-          </div>
-        </div> -->
       </div>
-    </div>
-    <div class="container max-w-2xl bg-green-900 rounded border-4 border-yellow-400 py-6 px-2">
-      <h2 class="text-yellow-400 text-3xl font-bold text-center mb-3">Results</h2>
-      <ul class="list-none md:text-xl text-2xl">
-        <li class="font-semibold ml-16 md:ml-0 mb-3 text-pink-400">1: Your Win!!</li>
-        <li class="font-semibold ml-16 md:ml-0 mb-3 text-sky-400">2: Your Lose...</li>
-        <li class="font-semibold ml-16 md:ml-0 mb-3 text-slate-400">3: Draw</li>
-        <li class="font-semibold ml-16 md:ml-0 mb-3 text-pink-400">4: Your Win!!</li>
-        <li class="font-semibold ml-16 md:ml-0 mb-3 text-pink-400">5: Your Win!!</li>
-      </ul>
-    </div>
+      <div id="result" class="container max-w-2xl bg-green-900 rounded border-4 border-yellow-400 py-6 px-2">
+        <h2 class="text-yellow-400 text-3xl font-bold text-center mb-3">Results</h2>
+        <ul id="result-list" class="list-none md:text-xl text-2xl">
+          <li class="font-semibold ml-16 md:ml-0 mb-3 text-pink-400">1: Your Win!!</li>
+          <li class="font-semibold ml-16 md:ml-0 mb-3 text-sky-400">2: Your Lose...</li>
+          <li class="font-semibold ml-16 md:ml-0 mb-3 text-slate-400">3: Draw</li>
+          <li class="font-semibold ml-16 md:ml-0 mb-3 text-pink-400">4: Your Win!!</li>
+          <li class="font-semibold ml-16 md:ml-0 mb-3 text-pink-400">5: Your Win!!</li>
+        </ul>
+      </div>
+    </div> -->
   </div>
 
   <script type="module" src="/src/main.ts"></script>
