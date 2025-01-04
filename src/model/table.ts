@@ -1,0 +1,70 @@
+import { Dealer } from "./dealer";
+import { Deck } from "./deck";
+import { Player } from "./player";
+
+export class Table {
+  private _dealer: Dealer;
+  private _player: Player;
+  private _deck: Deck;
+  private _gamePhase: string; //bet, distribute, action, evaluate, roundEnd
+  private _rounds: number;
+  private _currentRound: number = 1;
+  private _results: string[];
+
+  get dealer() {
+    return this._dealer;
+  }
+  get player() {
+    return this._player;
+  }
+  get deck() {
+    return this._deck;
+  }
+  set deck(newDeck: Deck) {
+    this._deck = newDeck;
+  }
+  get gamePhase() {
+    return this._gamePhase;
+  }
+  set gamePhase(updateGamePhase: string) {
+    this._gamePhase = updateGamePhase;
+  }
+  get rounds() {
+    return this._rounds;
+  }
+  get currentRound() {
+    return this._currentRound;
+  }
+  get results() {
+    return this._results;
+  }
+
+  constructor(name: string, rounds: number) {
+    this._dealer = new Dealer();
+    this._player = new Player(name);
+
+    this._deck = new Deck();
+    this._deck.shuffle();
+
+    this._gamePhase = "bet";
+    this._rounds = rounds;
+    this._results = [];
+  }
+
+  //手札の初期化 -> Dealerに1枚、Playerに2枚のカードを配る
+  initializeHands(): void {
+    this.dealer.hand.push(this.deck.drawOne()!);
+    this.player.hand.push(this.deck.drawOne()!);
+    this.player.hand.push(this.deck.drawOne()!);
+  }
+
+  resetDeck(): void {
+    this.deck = new Deck();
+  }
+
+  toString(): string {
+    return `Round${this.currentRound}: gamePhase -> ${
+      this.gamePhase
+    }, dealer -> ${this.dealer.toString()}, player -> ${this.player.toString()}`;
+  }
+}
