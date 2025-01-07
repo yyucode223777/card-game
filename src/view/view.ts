@@ -32,7 +32,7 @@ export class View {
     );
     gridContainer.append(View.renderTable(table), View.renderOperation());
 
-    gameDiv.append(gridContainer);
+    gameDiv.append(gridContainer, View.renderResult());
     app.append(gameDiv);
   }
 
@@ -245,17 +245,36 @@ export class View {
     return resultDiv;
   }
 
-  static renderResultListItem(round: number, isWin: boolean): HTMLLIElement {
+  static renderResultListItem(round: number, message: string): HTMLLIElement {
     const resultListItem = document.createElement("li");
     resultListItem.classList.add(
       "font-semibold",
       "ml-16",
       "mb-3",
-      `text-${isWin ? "pink" : "sky"}-400`
+      `text-white`
     );
-    resultListItem.innerText = `${round}: You ${isWin ? "Win" : "Lose"}`;
+    resultListItem.innerText = `${round}: ${message}`;
 
     return resultListItem;
+  }
+
+  static initResultList(table: Table): void {
+    const resultListEl = document.querySelector(
+      "#result-list"
+    ) as HTMLUListElement;
+    resultListEl.innerHTML = "";
+
+    table.results.forEach((message: string, index: number) => {
+      resultListEl.append(View.renderResultListItem(index + 1, message));
+    });
+  }
+
+  static addResultListItem(round: number, message: string): void {
+    const resultListEl = document.querySelector(
+      "#result-list"
+    ) as HTMLUListElement;
+
+    resultListEl.append(View.renderResultListItem(round, message));
   }
 
   static renderBet(): HTMLDivElement {
@@ -268,23 +287,23 @@ export class View {
         <div class="flex flex-row justify-around sm:flex-col gap-3">
             <div class="flex gap-2 sm:justify-between">
                 <label class="text-2xl text-white font-semibold" for="5">5:</label>
-                <input class="text-xl sm:w-2/4 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
-                    type="number" min="0" max="80" value="0" id="5"/>
+                <input class="text-xl w-16 sm:w-2/4 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
+                    type="number" min="0" value="0" id="5"/>
             </div>
             <div class="flex gap-2 sm:justify-between">
                 <label class="text-2xl text-white font-semibold" for="20">20:</label>
-                <input class="text-xl sm:w-2/4 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
-                    type="number" min="0" max="20" value="0" id="20"/>
+                <input class="text-xl w-16 sm:w-2/4 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
+                    type="number" min="0" value="0" id="20"/>
             </div>
             <div class="flex gap-2 sm:justify-between">
                 <label class="text-2xl text-white font-semibold" for="50">50:</label>
-                <input class="text-xl sm:w-2/4 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
-                    type="number" min="0" max="8" value="0" id="50"/>
+                <input class="text-xl w-16 sm:w-2/4 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
+                    type="number" min="0" value="0" id="50"/>
             </div>
             <div class="flex gap-2 sm:justify-between">
                 <label class="text-2xl text-white font-semibold" for="100">100:</label>
-                <input class="text-xl sm:w-2/4 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
-                    type="number" min="0" max="4" value="0" id="100"/>
+                <input class="text-xl w-16 sm:w-2/4 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
+                    type="number" min="0" value="0" id="100"/>
             </div>
         </div>
         <div class="flex justify-center mt-5">
@@ -315,11 +334,11 @@ export class View {
     <p class="text-center text-yellow-400 text-3xl font-semibold mb-7">Action</p>
     <div class="flex flex-col items-center gap-5">
         <button
-            id="surrender" class="bg-slate-500 rounded-full text-white text-2xl w-4/5 py-2 shadow-black shadow-md tarnsition-all duration-150 hover:bg-slate-400 hover:translate-y-1 hover:shadow-none">Surrender</button>
+            id="surrender" class="bg-slate-500 rounded-full text-white text-2xl w-4/5 py-2 shadow-black shadow-md tarnsition-all duration-150 hover:bg-slate-400 hover:translate-y-1 hover:shadow-none disabled:shadow-none disabled:translate-y-0 disabled:cursor-not-allowed disabled:bg-slate-500 disabled:bg-opacity-80">Surrender</button>
         <button
-            id="stand" class="bg-blue-500 rounded-full text-white text-2xl w-4/5 py-2 shadow-black shadow-md tarnsition-all duration-150 hover:bg-blue-400 hover:translate-y-1 hover:shadow-none">Stand</button>
+            id="stand" class="bg-blue-500 rounded-full text-white text-2xl w-4/5 py-2 shadow-black shadow-md tarnsition-all duration-150 hover:bg-blue-400 hover:translate-y-1 hover:shadow-none disabled:shadow-none disabled:translate-y-0 disabled:cursor-not-allowed disabled:bg-blue-500 disabled:bg-opacity-80">Stand</button>
         <button
-            id="hit" class="bg-amber-500 rounded-full text-white text-2xl w-4/5 py-2 shadow-black shadow-md tarnsition-all duration-150 hover:bg-amber-400 hover:translate-y-1 hover:shadow-none">Hit</button>
+            id="hit" class="bg-amber-500 rounded-full text-white text-2xl w-4/5 py-2 shadow-black shadow-md tarnsition-all duration-150 hover:bg-amber-400 hover:translate-y-1 hover:shadow-none disabled:shadow-none disabled:translate-y-0 disabled:cursor-not-allowed disabled:bg-amber-500 disabled:bg-opacity-80">Hit</button>
         <button
             id="double" class="bg-red-500 rounded-full text-white text-2xl w-4/5 py-2 shadow-black shadow-md tarnsition-all duration-150 hover:bg-red-400 hover:translate-y-1 hover:shadow-none disabled:shadow-none disabled:translate-y-0 disabled:cursor-not-allowed disabled:bg-red-500 disabled:bg-opacity-80">Double</button>
     </div>
@@ -333,20 +352,75 @@ export class View {
     const hitBtn = actionsDiv.querySelector("#hit") as HTMLButtonElement;
     const doubleBtn = actionsDiv.querySelector("#double") as HTMLButtonElement;
 
+    if (blackJack.table.player.chips < blackJack.table.player.bet * 2) {
+      doubleBtn.disabled = true;
+    }
+
     surrenderBtn.addEventListener("click", () => {
-      window.alert("surrender");
+      blackJack.handleActing(surrenderBtn.id);
     });
     standBtn.addEventListener("click", () => {
-      window.alert("stand");
+      blackJack.handleActing(standBtn.id);
     });
     hitBtn.addEventListener("click", () => {
-      window.alert("hit");
+      blackJack.handleActing(hitBtn.id);
     });
     doubleBtn.addEventListener("click", () => {
-      window.alert("double");
-      doubleBtn.disabled = true;
+      blackJack.handleActing(doubleBtn.id);
     });
 
     return actionsDiv;
+  }
+
+  static disableSurrenderBtn(): void {
+    const actionDiv = document.querySelector("#actions") as HTMLDivElement;
+    const surrenderBtn = actionDiv.querySelector(
+      "#surrender"
+    ) as HTMLButtonElement;
+
+    surrenderBtn.disabled = true;
+  }
+
+  static disableStandBtn(): void {
+    const actionDiv = document.querySelector("#actions") as HTMLDivElement;
+    const standBtn = actionDiv.querySelector("#stand") as HTMLButtonElement;
+
+    standBtn.disabled = true;
+  }
+
+  static disableHitBtn(): void {
+    const actionDiv = document.querySelector("#actions") as HTMLDivElement;
+    const hitBtn = actionDiv.querySelector("#hit") as HTMLButtonElement;
+
+    hitBtn.disabled = true;
+  }
+
+  static disableDoubleBtn(): void {
+    const actionDiv = document.querySelector("#actions") as HTMLDivElement;
+    const doubleBtn = actionDiv.querySelector("#double") as HTMLButtonElement;
+
+    doubleBtn.disabled = true;
+  }
+
+  static renderNextBtn(): HTMLDivElement {
+    const nextBtnDiv = document.createElement("div");
+    nextBtnDiv.classList.add("flex", "justify-center", "my-5", "w-full");
+    nextBtnDiv.innerHTML = `
+    <button id="next-btn" type="button"
+                class="bg-violet-700 rounded-full text-white text-2xl w-4/5 max-w-md py-2 shadow-black shadow-md tarnsition-all duration-150 hover:opacity-90 hover:translate-y-1 hover:shadow-none">Next</button>
+    `;
+
+    const nextBtn = nextBtnDiv.querySelector("#next-btn") as HTMLButtonElement;
+    nextBtn.addEventListener("click", () => {
+      blackJack.initializeGame();
+    });
+
+    return nextBtnDiv;
+  }
+
+  static insertNextBtn(): void {
+    const gameDiv = document.querySelector("#game-div") as HTMLDivElement;
+    const resultDiv = document.querySelector("#result") as HTMLDivElement;
+    gameDiv.insertBefore(View.renderNextBtn(), resultDiv);
   }
 }

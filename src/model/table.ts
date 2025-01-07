@@ -6,7 +6,7 @@ export class Table {
   private _dealer: Dealer;
   private _player: Player;
   private _deck: Deck;
-  private _gamePhase: string; //bet, distribute, action, evaluate, roundEnd
+  private _gamePhase: string; //bet, distribute, action, evaluate
   private _rounds: number;
   private _currentRound: number = 1;
   private _results: string[];
@@ -35,8 +35,14 @@ export class Table {
   get currentRound() {
     return this._currentRound;
   }
+  set currentRound(value: number) {
+    this._currentRound = value;
+  }
   get results() {
     return this._results;
+  }
+  set results(newResults: string[]) {
+    this._results = newResults;
   }
 
   constructor(name: string, rounds: number) {
@@ -60,6 +66,7 @@ export class Table {
 
   resetDeck(): void {
     this.deck = new Deck();
+    this.deck.shuffle();
   }
 
   toString(): string {
