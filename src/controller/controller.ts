@@ -124,9 +124,10 @@ export class Controller {
 
           //Roundの評価をする関数(table.resultsの更新)
           await this.evaluateRound();
+        } else {
+          View.updatePlayer(this.table.player);
+          View.addPlayerHand(addedCard);
         }
-        View.updatePlayer(this.table.player);
-        View.addPlayerHand(addedCard);
 
         break;
       }
@@ -152,9 +153,10 @@ export class Controller {
 
           //Roundの評価をする関数(table.resultsの更新)
           await this.evaluateRound();
+        } else {
+          View.updatePlayer(this.table.player);
+          View.addPlayerHand(addedCard);
         }
-        View.updatePlayer(this.table.player);
-        View.addPlayerHand(addedCard);
 
         break;
       }

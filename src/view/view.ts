@@ -287,22 +287,22 @@ export class View {
         <div class="flex flex-row justify-around sm:flex-col gap-3">
             <div class="flex gap-2 sm:justify-between">
                 <label class="text-2xl text-white font-semibold" for="5">5:</label>
-                <input class="text-xl w-16 sm:w-2/4 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
+                <input inputmode="numeric" class="text-xl w-full sm:w-2/4 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
                     type="number" min="0" value="0" id="5"/>
             </div>
             <div class="flex gap-2 sm:justify-between">
                 <label class="text-2xl text-white font-semibold" for="20">20:</label>
-                <input class="text-xl w-16 sm:w-2/4 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
+                <input inputmode="numeric" class="text-xl w-full sm:w-2/4 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
                     type="number" min="0" value="0" id="20"/>
             </div>
             <div class="flex gap-2 sm:justify-between">
                 <label class="text-2xl text-white font-semibold" for="50">50:</label>
-                <input class="text-xl w-16 sm:w-2/4 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
+                <input inputmode="numeric" class="text-xl w-full sm:w-2/4 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
                     type="number" min="0" value="0" id="50"/>
             </div>
             <div class="flex gap-2 sm:justify-between">
                 <label class="text-2xl text-white font-semibold" for="100">100:</label>
-                <input class="text-xl w-16 sm:w-2/4 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
+                <input inputmode="numeric" class="text-xl w-full sm:w-2/4 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
                     type="number" min="0" value="0" id="100"/>
             </div>
         </div>
