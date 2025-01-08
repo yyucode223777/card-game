@@ -139,7 +139,7 @@ export class View {
     ) as HTMLParagraphElement;
     playerChips.innerText = `C: ${player.chips};`;
   }
-
+  
   static initPlayerHand(): void {
     const playerHandEl = document.querySelector(
       "#player-hand"
@@ -285,25 +285,25 @@ export class View {
     <p class="text-center text-yellow-400 text-3xl font-semibold mb-7">Stake</p>
     <form>
         <div class="flex flex-row justify-around sm:flex-col gap-3">
-            <div class="flex gap-2 sm:justify-between">
-                <label class="text-2xl text-white font-semibold" for="5">5:</label>
-                <input inputmode="numeric" class="text-xl w-full sm:w-2/4 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
-                    type="number" min="0" value="0" id="5"/>
+            <div class="sm:flex sm:gap-2 sm:justify-between">
+                <label class="text-lg sm:text-2xl text-white font-semibold" for="5">$ 5</label>
+                <input inputmode="numeric" class="text-lg sm:text-2xl w-full sm:w-2/4 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
+                    type="number" min="0" placeholder="0" id="5"/>
             </div>
-            <div class="flex gap-2 sm:justify-between">
-                <label class="text-2xl text-white font-semibold" for="20">20:</label>
-                <input inputmode="numeric" class="text-xl w-full sm:w-2/4 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
-                    type="number" min="0" value="0" id="20"/>
+            <div class="sm:flex sm:gap-2 sm:justify-between">
+                <label class="text-lg sm:text-2xl text-white font-semibold" for="20">$ 20</label>
+                <input inputmode="numeric" class="text-lg sm:text-2xl w-full sm:w-2/4 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
+                    type="number" min="0" placeholder="0" id="20"/>
             </div>
-            <div class="flex gap-2 sm:justify-between">
-                <label class="text-2xl text-white font-semibold" for="50">50:</label>
-                <input inputmode="numeric" class="text-xl w-full sm:w-2/4 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
-                    type="number" min="0" value="0" id="50"/>
+            <div class="sm:flex sm:gap-2 sm:justify-between">
+                <label class="text-lg sm:text-2xl text-white font-semibold" for="50">$ 50</label>
+                <input inputmode="numeric" class="text-lg sm:text-2xl w-full sm:w-2/4 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
+                    type="number" min="0" placeholder="0" id="50"/>
             </div>
-            <div class="flex gap-2 sm:justify-between">
-                <label class="text-2xl text-white font-semibold" for="100">100:</label>
-                <input inputmode="numeric" class="text-xl w-full sm:w-2/4 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
-                    type="number" min="0" value="0" id="100"/>
+            <div class="sm:flex sm:gap-2 sm:justify-between">
+                <label class="text-lg sm:text-2xl text-white font-semibold" for="100">$ 100</label>
+                <input inputmode="numeric" class="text-lg sm:text-2xl w-full sm:w-2/4 font-semibold rounded px-2 focus:outline-2 outline-emerald-400"
+                    type="number" min="0" placeholder="0" id="100"/>
             </div>
         </div>
         <div class="flex justify-center mt-5">
