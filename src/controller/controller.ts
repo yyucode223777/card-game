@@ -14,16 +14,8 @@ export class Controller {
 
   //ゲームの初期化 -> tableクラスのインスタンス化、初期画面の描画
   initializeGame(): void {
-    if (this.table.currentRound <= this.table.rounds) {
-      this.initializeRound();
-      View.renderGame(this.table); //ゲーム画面の大枠
-      View.initDealerHand(); //カード配布前のDealerの手札
-      View.initPlayerHand(); //カード配布前のPlayerの手札
-      View.updateOperation("bet");
-      View.initResultList(this.table); //結果画面の描画
-    } else {
-      //1.トータルの結果を表示,2.再プレイするか確認
-      alert(`お疲れ様です。あなたのチップは${this.table.player.chips}です。`);
+    if (this.table.currentRound > this.table.rounds) {
+      alert(`お疲れ様です! あなたのチップは${this.table.player.chips}ドルです!`);
       this.initializeRound();
 
       this.table.player.chips = 400;
@@ -31,6 +23,22 @@ export class Controller {
       this.table.results = [];
 
       this.initializeGame();
+    } else if (this.table.player.chips === 0) {
+      alert("Game Over...");
+      this.initializeRound();
+
+      this.table.player.chips = 400;
+      this.table.currentRound = 1;
+      this.table.results = [];
+
+      this.initializeGame();
+    } else {
+      this.initializeRound();
+      View.renderGame(this.table); //ゲーム画面の大枠
+      View.initDealerHand(); //カード配布前のDealerの手札
+      View.initPlayerHand(); //カード配布前のPlayerの手札
+      View.updateOperation("bet");
+      View.initResultList(this.table); //結果画面の描画
     }
   }
 
@@ -170,14 +178,38 @@ export class Controller {
     await this.delay(1000);
 
     if (this.table.player.status === "surrender") {
-      this.table.results.push(`${this.table.player.name} Surrender.`);
+      //プレイヤーがSurrenderした時の処理
+      this.table.results.push({
+        result: "lose",
+        action: "surrender",
+        bet: this.table.player.bet,
+        prize: -Math.floor(this.table.player.bet / 2),
+      });
     } else if (this.table.player.status === "bust") {
-      this.table.results.push(`${this.table.player.name} Bust.`);
+      //プレイヤーの手札がBustした時の処理
+      this.table.results.push({
+        result: "lose",
+        action: "bust",
+        bet: this.table.player.bet,
+        prize: -this.table.player.bet,
+      });
     } else if (this.table.dealer.status === "blackjack") {
       if (this.table.player.status === "blackjack") {
-        this.table.results.push(`${this.table.player.name} Push.`);
+        //ディーラーとプレイヤー、お互いにBlackjackの時の処理
+        this.table.results.push({
+          result: "draw",
+          action: "push",
+          bet: this.table.player.bet,
+          prize: 0,
+        });
       } else {
-        this.table.results.push(`${this.table.player.name} Lose.`);
+        //ディーラーのみBlackjackの時の処理
+        this.table.results.push({
+          result: "lose",
+          action: this.table.player.status,
+          bet: this.table.player.bet,
+          prize: -this.table.player.bet,
+        });
         this.table.player.chips -= this.table.player.bet;
       }
     } else if (
@@ -185,25 +217,58 @@ export class Controller {
       this.table.dealer.getHandPoint() < this.table.player.getHandPoint()
     ) {
       if (this.table.player.status === "blackjack") {
-        this.table.results.push(`${this.table.player.name} BlackJack.`);
+        //プレイヤーのみBlackjackの時の処理
+        this.table.results.push({
+          result: "win",
+          action: "blackjack",
+          bet: this.table.player.bet,
+          prize: Math.floor(this.table.player.bet * 1.5),
+        });
         this.table.player.chips += Math.floor(this.table.player.bet * 1.5);
       } else {
-        this.table.results.push(`${this.table.player.name} Win.`);
+        //プレイヤーが勝利した時の処理
+        this.table.results.push({
+          result: "win",
+          action: "stand",
+          bet: this.table.player.bet,
+          prize: this.table.player.bet,
+        });
         this.table.player.chips += this.table.player.bet;
       }
     } else if (
       this.table.dealer.status !== "bust" &&
       this.table.dealer.getHandPoint() > this.table.player.getHandPoint()
     ) {
-      this.table.results.push(`${this.table.player.name} Lose.`);
+      //ディーラーが勝利した時の処理
+      this.table.results.push({
+        result: "lose",
+        action: "stand",
+        bet: this.table.player.bet,
+        prize: -this.table.player.bet,
+      });
       this.table.player.chips -= this.table.player.bet;
     } else {
-      this.table.results.push(`${this.table.player.name} Push.`);
+      //引き分けの時の処理
+      this.table.results.push({
+        result: "draw",
+        action: "push",
+        bet: this.table.player.bet,
+        prize: 0,
+      });
     }
 
-    //ここまででラウンド終了
-    this.table.currentRound++;
-    View.insertNextBtn();
+    let result = window.confirm(
+      `${
+        this.table.results[this.table.currentRound - 1].prize
+      }ドル獲得しました!\n次のラウンドに進みますか?`
+    );
+    if (result) {
+      this.table.currentRound++;
+      this.initializeGame();
+    } else {
+      this.table.currentRound = this.table.rounds + 1;
+      this.initializeGame();
+    }
   }
 
   initializeRound(): void {
