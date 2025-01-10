@@ -2,7 +2,7 @@ import { blackJack } from "../main";
 import { Card } from "../model/card";
 import { Dealer } from "../model/dealer";
 import { Player } from "../model/player";
-import { Table } from "../model/table";
+import { Round, Table } from "../model/table";
 
 export class View {
   //ゲームの初期画面を作成
@@ -18,7 +18,8 @@ export class View {
       "justify-center",
       "gap-y-4",
       "px-3",
-      "py-10"
+      "py-3",
+      "sm:py-10"
     );
     gameDiv.id = "game-div";
 
@@ -45,7 +46,8 @@ export class View {
       "flex",
       "flex-col",
       "gap-10",
-      "py-14",
+      "py-6",
+      "sm:py-14",
       "bg-green-900",
       "rounded",
       "border-4",
@@ -139,7 +141,7 @@ export class View {
     ) as HTMLParagraphElement;
     playerChips.innerText = `C: ${player.chips};`;
   }
-  
+
   static initPlayerHand(): void {
     const playerHandEl = document.querySelector(
       "#player-hand"
@@ -206,7 +208,8 @@ export class View {
       "rounded",
       "border-4",
       "border-yellow-400",
-      "py-14",
+      "py-6",
+      "sm:py-14",
       "px-2"
     );
     operationDiv.id = "operation";
@@ -234,26 +237,36 @@ export class View {
       "border-4",
       "border-yellow-400",
       "py-6",
-      "px-2"
+      "sm:py-14",
+      "px-0",
+      "sm:px-2"
     );
     resultDiv.id = "result";
     resultDiv.innerHTML = `
     <h2 class="text-yellow-400 text-3xl font-bold text-center mb-3">Results</h2>
-    <ul id="result-list" class="list-none text-2xl"></ul>
+    <ul id="result-list" class="list-none text-lg sm:text-2xl"></ul>
     `;
 
     return resultDiv;
   }
 
-  static renderResultListItem(round: number, message: string): HTMLLIElement {
+  static renderResultListItem(
+    round: number,
+    roundResult: Round
+  ): HTMLLIElement {
     const resultListItem = document.createElement("li");
-    resultListItem.classList.add(
-      "font-semibold",
-      "ml-16",
-      "mb-3",
-      `text-white`
-    );
-    resultListItem.innerText = `${round}: ${message}`;
+    resultListItem.classList.add("font-semibold", "mb-3", "ml-3");
+    if (roundResult.result === "win") {
+      resultListItem.classList.add("text-red-400");
+    } else if (roundResult.result === "lose") {
+      resultListItem.classList.add("text-blue-400");
+    } else {
+      resultListItem.classList.add("text-white");
+    }
+    resultListItem.innerHTML = `
+    <span>[Round${round}]</span>
+    <p>Action: ${roundResult.action}, Bet: ${roundResult.bet}, Prize: ${roundResult.prize}</p>
+    `;
 
     return resultListItem;
   }
@@ -264,17 +277,17 @@ export class View {
     ) as HTMLUListElement;
     resultListEl.innerHTML = "";
 
-    table.results.forEach((message: string, index: number) => {
-      resultListEl.append(View.renderResultListItem(index + 1, message));
+    table.results.forEach((roundResult: Round, index: number) => {
+      resultListEl.append(View.renderResultListItem(index + 1, roundResult));
     });
   }
 
-  static addResultListItem(round: number, message: string): void {
+  static addResultListItem(round: number, roundResult: Round): void {
     const resultListEl = document.querySelector(
       "#result-list"
     ) as HTMLUListElement;
 
-    resultListEl.append(View.renderResultListItem(round, message));
+    resultListEl.append(View.renderResultListItem(round, roundResult));
   }
 
   static renderBet(): HTMLDivElement {
@@ -400,27 +413,5 @@ export class View {
     const doubleBtn = actionDiv.querySelector("#double") as HTMLButtonElement;
 
     doubleBtn.disabled = true;
-  }
-
-  static renderNextBtn(): HTMLDivElement {
-    const nextBtnDiv = document.createElement("div");
-    nextBtnDiv.classList.add("flex", "justify-center", "my-5", "w-full");
-    nextBtnDiv.innerHTML = `
-    <button id="next-btn" type="button"
-                class="bg-violet-700 rounded-full text-white text-2xl w-4/5 max-w-md py-2 shadow-black shadow-md tarnsition-all duration-150 hover:opacity-90 hover:translate-y-1 hover:shadow-none">Next</button>
-    `;
-
-    const nextBtn = nextBtnDiv.querySelector("#next-btn") as HTMLButtonElement;
-    nextBtn.addEventListener("click", () => {
-      blackJack.initializeGame();
-    });
-
-    return nextBtnDiv;
-  }
-
-  static insertNextBtn(): void {
-    const gameDiv = document.querySelector("#game-div") as HTMLDivElement;
-    const resultDiv = document.querySelector("#result") as HTMLDivElement;
-    gameDiv.insertBefore(View.renderNextBtn(), resultDiv);
   }
 }

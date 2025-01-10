@@ -2,6 +2,13 @@ import { Dealer } from "./dealer";
 import { Deck } from "./deck";
 import { Player } from "./player";
 
+export type Round = {
+  result: string; //win, lose, draw
+  action: string; //stand, bust, surrender, blackjack
+  bet: number;
+  prize: number;
+};
+
 export class Table {
   private _dealer: Dealer;
   private _player: Player;
@@ -9,7 +16,7 @@ export class Table {
   private _gamePhase: string; //bet, distribute, action, evaluate
   private _rounds: number;
   private _currentRound: number = 1;
-  private _results: string[];
+  private _results: Round[];
 
   get dealer() {
     return this._dealer;
@@ -41,7 +48,7 @@ export class Table {
   get results() {
     return this._results;
   }
-  set results(newResults: string[]) {
+  set results(newResults: Round[]) {
     this._results = newResults;
   }
 
